@@ -11,11 +11,13 @@ public class Duck implements IDuck {
     private Direction direction;
     private Random rnd;
 
-    public Duck(int x, int y, int speed) {
+    public Duck(int x, int y, int speed, int size) {
+        rnd = new Random();
         setX(x);
         setY(y);
         randomizeDirection();
         setSpeed(speed);
+        setSize(size);
     }
 
     @Override
@@ -46,6 +48,13 @@ public class Duck implements IDuck {
     @Override
     public int getSize() {
         return size;
+    }
+
+    private void setSize(int size){
+        if(size <= 0){
+            throw new IllegalArgumentException("The size of the duck should be positive");
+        }
+        this.size = size;
     }
 
     private void setSpeed(int speed){
