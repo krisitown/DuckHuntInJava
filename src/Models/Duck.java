@@ -2,6 +2,7 @@ package Models;
 
 import Models.Interfaces.IDuck;
 
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 public class Duck implements IDuck {
@@ -9,10 +10,12 @@ public class Duck implements IDuck {
     private int speed;
     private int size;
     private Direction direction;
+    private Sprite sprite;
     private Random rnd;
 
     public Duck(int x, int y, int speed, int size) {
         rnd = new Random();
+        sprite = new Sprite();
         setX(x);
         setY(y);
         randomizeDirection();
@@ -33,6 +36,11 @@ public class Duck implements IDuck {
         } catch (IllegalArgumentException iaException){
             reverseDirection();
         }
+    }
+
+    @Override
+    public BufferedImage getImage() {
+        return sprite.getImage(this.direction);
     }
 
     @Override
@@ -82,12 +90,6 @@ public class Duck implements IDuck {
 
     private void move(){
         switch (direction){
-            case Up:
-                setY(y - speed);
-                break;
-            case Down:
-                setY(y + speed);
-                break;
             case Left:
                 setX(x - speed);
                 break;
@@ -102,19 +104,11 @@ public class Duck implements IDuck {
                 setX(x + speed);
                 setY(y - speed);
                 break;
-            case DownLeft:
-                setY(y + speed);
-                setX(x - speed);
-                break;
-            case DownRight:
-                setY(y + speed);
-                setX(x + speed);
-                break;
         }
     }
 
     private void randomizeDirection() {
-        this.direction = Direction.values()[rnd.nextInt(8)]; //possible error add +1
+        this.direction = Direction.values()[rnd.nextInt(4)]; //possible error add +1
     }
 
 

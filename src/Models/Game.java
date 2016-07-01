@@ -1,9 +1,6 @@
 package Models;
 
-import Models.Constants;
-import Models.Duck;
 import Models.Interfaces.IDuck;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -40,7 +37,13 @@ public class Game {
 
     public List<IDuck> getDucks() { return this.ducks; }
 
+    public int getBullets() { return this.bullets; }
+
+    public int getScore() { return this.score; }
+
     private void spawnDucks(){
+        score -= ducks.size() * Constants.scorePerDuck;
+        ducks.clear();
         int numOfDucks = rnd.nextInt(Constants.maxNumberOfDucksToSpawn) + 1;
         for (int i = 0; i < numOfDucks; i++) {
             ducks.add(new Duck(rnd.nextInt(Constants.windowWidth),
@@ -54,7 +57,17 @@ public class Game {
                 return;
             }
             for (int i = 0; i < ducks.size(); i++) {
-                ducks.get(i).updateDuck();
+                int y = ducks.get(i).getY();
+                if(y <= 10){
+                    score -= Constants.scorePerDuck;
+                    ducks.remove(i);
+                    if(i != 0){
+                        i--;
+                    }
+                }
+                if(ducks.size() != 0){
+                    ducks.get(i).updateDuck();
+                }
             }
             try {
                 Thread.sleep(16);
